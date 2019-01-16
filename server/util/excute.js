@@ -1,5 +1,8 @@
 const puppeteer = require('puppeteer');
-
+const util = require('util');
+const os = require('./scroll.js');
+const oc = require('./click.js');
+const device = require('./device.js');
 const start = async () => {
   const browser = await puppeteer.launch({
         headless: true,
@@ -8,38 +11,30 @@ const start = async () => {
 	);
 
   const page = await browser.newPage();
-  page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36");
-  //view {width:800,height:600}
-  const view = page.viewport();
-  console.log(view);
-
   page.on('console', msg => console.log(msg._text));
-
-  var index = 2;
+  let index = Math.round(Math.random()*10) + 1;
   while(index){
-    await page.goto('http://www.yangzhihuiweb.com');
-    const button = await page.$("#recent-posts-2 > ul > li:nth-child(1) > a")
-    await button.click();
-    index--;
-    console.log('第'+index+'次');
+	  await device.setDevice(page);
+  	  const {width,height} = page.viewport();
+  	  console.log("像素："+width + " " + height +" index:"+index);
+	  const navigationPromise = page.waitForNavigation()
+	  await page.evaluate(async () => {
+	    // use window.md5 to compute hashes
+	    // const myString = 'PUPPETEER';
+	    // const myHash = await window.md5(myString);
+	    console.log("innnerWidth:"+window.innerWidth + " innerHeight:"+window.innerHeight + " ua:"+window.navigator.userAgent
+);
+	  });
+
+	  await oc.click(page);
+	  await os.scroll(page);
+	  index--;
   }
   
-  
-
-  // Get the "viewport" of the page, as reported by the page.
-  // const dimensions = await page.evaluate(() => {
-    
-  //   return {
-  //     width: document.documentElement.clientWidth,
-  //     height: document.documentElement.clientHeight,
-  //     deviceScaleFactor: window.devicePixelRatio
-  //   };
-  // });
-
-  
-  // console.log('Dimensions:', dimensions);
 
   await browser.close();
 };
 
 start();
+// const setIntervalTimer = util.promisify(setInterval);
+// setIntervalTimer(start, 300000);

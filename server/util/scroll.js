@@ -2,6 +2,7 @@ function wait (ms) {
   return new Promise(resolve => setTimeout(() => resolve(), ms));
   }
 
+async function scroll(page){
   await page.goto('http://www.yangzhihuiweb.com', {waitUntil: 'load'});
   // Get the height of the rendered page
   const bodyHandle = await page.$('body');
@@ -26,3 +27,6 @@ function wait (ms) {
 
   // Some extra delay to let images load
   await wait(2000);
+}
+
+module.exports = {"scroll":scroll}
