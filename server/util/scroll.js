@@ -3,7 +3,7 @@ function wait (ms) {
   }
 
 async function scroll(page){
-  await page.goto('http://www.yangzhihuiweb.com', {waitUntil: 'load'});
+  // await page.goto('http://www.yangzhihuiweb.com', {waitUntil: 'load'});
   // Get the height of the rendered page
   const bodyHandle = await page.$('body');
   const { height } = await bodyHandle.boundingBox();

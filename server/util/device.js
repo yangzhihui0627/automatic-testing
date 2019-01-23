@@ -1,15 +1,17 @@
+const random = require('./random.js');
 /**
  * Set Emulate
  */
 async function device(page){
 	let deviceType = ["pc","sp","ipad"];
-	let device = deviceInfo[deviceType[GetRandomNum(0,2)]];
+	let device = deviceInfo[deviceType[random.GetRandomNum(0,2)]];
+	console.log("device"+ device + " randomValue:"+ random.GetRandomNum(0,2));
 	let deviceEmulate = {
 	    'name': 'ptengine_emulate',
-	    'userAgent': device[GetRandomNum(0,device.length-1)].ua,
+	    'userAgent': device[random.GetRandomNum(0,device.length-1)].ua,
 	    'viewport': {
-	      'width': device[GetRandomNum(0,device.length-1)].px.width,
-	      'height': device[GetRandomNum(0,device.length-1)].px.height,
+	      'width': device[random.GetRandomNum(0,device.length-1)].px.width,
+	      'height': device[random.GetRandomNum(0,device.length-1)].px.height,
 	      'deviceScaleFactor': 1,
 	      'isMobile': device == "pc"?false:true,
 	      'hasTouch': device == "pc"?false:true,
@@ -20,11 +22,7 @@ async function device(page){
 	// page.setUserAgent(device[GetRandomNum(0,device.length-1)].ua);
     // page.setViewport(device[GetRandomNum(0,device.length-1)].px);
 }
-function GetRandomNum(Min,Max){   
-	var Range = Max - Min;   
-	var Rand = Math.random();   
-	return(Min + Math.round(Rand * Range));   
-} 
+
 const deviceInfo = 
 {"pc":[
 	{"ua":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) firefox/70.0.3538.102 Safari/537.36","px":{"width":1024,"height":768}},

@@ -10,29 +10,21 @@ const start = async () => {
 	    }
 	);
 
-  const page = await browser.newPage();
-  page.on('console', msg => console.log(msg._text));
-  let index = Math.round(Math.random()*10) + 1;
+  // let index = Math.round(Math.random()*10) + 1;
+  let index = 1;
   while(index){
+  	  let page = await browser.newPage();
+  	  page.on('console', msg => console.log(msg._text));
 	  await device.setDevice(page);
   	  const {width,height} = page.viewport();
   	  console.log("像素："+width + " " + height +" index:"+index);
-	  const navigationPromise = page.waitForNavigation()
-	  await page.evaluate(async () => {
-	    // use window.md5 to compute hashes
-	    // const myString = 'PUPPETEER';
-	    // const myHash = await window.md5(myString);
-	    console.log("innnerWidth:"+window.innerWidth + " innerHeight:"+window.innerHeight + " ua:"+window.navigator.userAgent
-);
-	  });
-
 	  await oc.click(page);
 	  await os.scroll(page);
+	  await page.close();
+	  
 	  index--;
   }
-  
-
-  await browser.close();
+  await browser.close();  
 };
 
 start();
