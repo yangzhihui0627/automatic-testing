@@ -101,10 +101,10 @@ const start = async (index) => {
       await page.waitFor(3000)
 
       //click Jackets button
-      await page.click("#ui-id-10")
+      await page.click("#ui-id-12")
 
       //wait for product list
-      await page.waitForNavigation()
+      await navigationPromise
 
       await page.waitFor(3000)
       
@@ -126,4 +126,4 @@ const start = async (index) => {
   
 }
 
-start(4);
+start(8);
