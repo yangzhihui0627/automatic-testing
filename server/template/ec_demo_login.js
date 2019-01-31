@@ -1,62 +1,23 @@
 const puppeteer = require('puppeteer');
 const os = require('../util/scroll.js');
+const device = require('../util/device.js');
+const monitor = require('../util/monitor.js');
 const start = async (index) => {
-  
-  let deviceEmulate = {
-      'name': 'ptengine_emulate',
-      'userAgent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-      'viewport': {
-        'width': 375,
-        'height': 667,
-        'deviceScaleFactor': 1,
-        'isMobile':true,
-        'hasTouch':true,
-        'isLandscape':false
-      }
-    }
-  
-  
+    
   while(index){
     browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         devtools: false
       })
     page = await browser.newPage()
     //重置最长超时时间，默认为30秒
     page.setDefaultNavigationTimeout(60000)
     // await page.setRequestInterception(true)
-    page.on('console', async(msg) => {
-      try{
-          console.log(msg._text)
-      }catch(e){
-
-      }
-    });
-    page.on('request', async(req) => {
-      try{
-        if(req.url().indexOf("loginPost") > 0){
-          console.log("请求："+req.url() + " body:"+req.body + " params:"+req.params + " query:"+req.query + " cookies:"+req.cookies)
-        }
-         // req.continue()
-      }catch(e){
-        console.log("try catch:"+e);
-        // req.continue()
-      }    
-    });
-    page.on('response', res =>{
-      try{
-        if(res.ok()){
-          let request = res.request()
-          console.log("响应成功："+request.url())
-        }
-      }catch(e){
-        console.log("try catch:"+e)
-      }
-      
-    })
+    // 设置监听
+    await monitor.setMonitor(page)
 
     //set device
-    await page.emulate(deviceEmulate);
+    await device.setDevice(page,"sp");
     const navigationPromise = page.waitForNavigation(); 
     await page.goto("https://ecdemo.ptengine.cn/customer/account/login/",{
             waitUntil: 'networkidle0'
@@ -77,7 +38,6 @@ const start = async (index) => {
     await page.evaluate(x => {
         let emai = document.querySelector("#email")
         let pass = document.querySelector("#pass")
-        console.log("登录条件："+emai.value + "  "+pass.value + " cookies:"+ document.cookie);
     }, 7);
 
     let send = await page.$("#send2")
@@ -91,6 +51,7 @@ const start = async (index) => {
     let viewport = await page.viewport();
     if(viewport.isMobile){
       //click menu button
+      await page.waitForSelector('body > div.page-wrapper > header > div.header.content > span')
       await page.click('body > div.page-wrapper > header > div.header.content > span')
 
       await page.waitFor(3000)
@@ -126,4 +87,4 @@ const start = async (index) => {
   
 }
 
-start(8);
+start(10);
