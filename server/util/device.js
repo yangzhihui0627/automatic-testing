@@ -2,10 +2,15 @@ const random = require('./random.js');
 /**
  * Set Emulate
  */
-async function device(page){
+async function device(page,type){
 	let deviceType = ["pc","sp","ipad"];
-	let device = deviceInfo[deviceType[random.GetRandomNum(0,2)]];
-	console.log("device"+ device + " randomValue:"+ random.GetRandomNum(0,2));
+	//如果设置了UA设备类型，则直接随机生成指定设备类型的UA，否则随机取设备类型
+	let device = [];
+	if(type){
+		device = deviceInfo[type];
+	}else{
+		device = deviceInfo[deviceType[random.GetRandomNum(0,2)]];
+	}
 	let deviceEmulate = {
 	    'name': 'ptengine_emulate',
 	    'userAgent': device[random.GetRandomNum(0,device.length-1)].ua,
