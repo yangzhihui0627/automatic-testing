@@ -3,7 +3,7 @@ const util = require('util');
 const os = require('../util/scroll.js');
 const device = require('../util/device.js');
 const monitor = require('../util/monitor.js');
-const start = async () => {
+const start = async (index) => {
   const browser = await puppeteer.launch({
         headless: true,
         devtools: false
@@ -11,7 +11,7 @@ const start = async () => {
 	);
 
   // let index = Math.round(Math.random()*10) + 1;
-  let index = 5;
+
   while(index){
   	  let page = await browser.newPage();
   	  // page.on('console', msg => console.log(msg._text));
@@ -70,6 +70,6 @@ const start = async () => {
   await browser.close();  
 };
 
-start();
+start(5);
 // const setIntervalTimer = util.promisify(setInterval);
 // setIntervalTimer(start, 300000);

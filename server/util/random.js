@@ -1,9 +1,15 @@
+ /**
+ * 生成指定范围的随机数
+ */
  function GetRandomNum(Min,Max){   
 	var Range = Max - Min;   
 	var Rand = Math.random();   
 	return(Min + Math.round(Rand * Range));   
 }
 
+/**
+* 生成随机点击点，使点击看起来更加自然些
+*/
 async function RandomClick(doc,ele){
 	let pos = doc.querySelector(ele);
 		//随机生成点击坐标，为了让点击数据看起更自然些

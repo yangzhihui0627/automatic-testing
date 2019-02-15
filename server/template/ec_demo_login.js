@@ -27,12 +27,9 @@ const start = async (index) => {
     await navigationPromise
 
     await page.waitForSelector('#email')
-    // let email_input =await page.$("#email")
-    // await email_input.click()
+   
     await page.type('#email','zhihui.yang@ptmind.com', {delay: 20})
 
-    // let password_input = await page.$("#pass")
-    // await password_input.click()
     await page.type('#pass','Ptmind2008',{delay:20})
 
     await page.evaluate(x => {

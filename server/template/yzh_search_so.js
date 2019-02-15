@@ -50,6 +50,9 @@ const start = async (index) => {
             const page2 = ( await browser.pages() )[2]
             //监听ptengine数据
             await monitor.setMonitor(page2)
+
+            await page2.waitForSelector('#post-272 > .blog-post > article > .entry-content > .red-btn > .btn')
+            
             await page2.click('#post-272 > .blog-post > article > .entry-content > .red-btn > .btn')
             //切换页面后，导航对象是浏览器级别的，因此不需要重新创建
             await navigationPromise
@@ -57,9 +60,6 @@ const start = async (index) => {
             await page2.waitForSelector('ul > .cat-item > .children > .cat-item-18 > a')
 
             await page2.click('ul > .cat-item > .children > .cat-item-18 > a')
-
-                
-            await page.close();
 
             await browser.close();  
             index--;
